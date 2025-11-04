@@ -103,8 +103,18 @@ pipeline {
                     sh '''
                         npx wait-port http://localhost:8080/api/health -t 30000
                         npm ci
-                        npm playwright test
+                        npx playwright test
                     '''
+                }
+            }
+            post {
+                always{
+                    junit 'tests-api/test-results/results.xml'
+                    publishHTML target: [
+                        reportDir : 'tests-api/playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Playwright API Test Report'
+                    ]
                 }
             }
         }
