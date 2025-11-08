@@ -132,6 +132,6 @@ jobs:
           
       - name: Run API Tests
         working-directory: ./tests-api
-        runs: |
+        run: |
           npm ci
           npx playwright test
