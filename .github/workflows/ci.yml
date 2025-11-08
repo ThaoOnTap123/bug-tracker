@@ -141,8 +141,16 @@ jobs:
 
       - name: Upload API Test Results
         if: always()
-        uses: action/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: apit-test-results
           path: ./tests-api/test-Results
+          retention-days: 30
+
+      - name: Upload API Test Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apit-test-playwright-reports
+          path: ./tests-api/playwright-report
           retention-days: 30
