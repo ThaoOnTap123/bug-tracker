@@ -81,7 +81,7 @@ jobs:
 
           echo "report<<EOF" >> $GITHUB_OUTPUT
           cat full_output.txt >> $GITHUB_OUTPUT
-          echo "report" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Publish Frontend Test Results
         uses: dorny/test-reporter@v1
