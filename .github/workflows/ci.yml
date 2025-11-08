@@ -55,7 +55,7 @@ jobs:
 
   unit-tests-frontend:
     runs-on: ubuntu-latest
-    outputs: 
+    outputs:
       coverage: ${{steps.test-frontend.outputs.report}}
     steps:
       - uses: actions/checkout@v4
@@ -118,20 +118,31 @@ jobs:
             ```
 
   api-tests:
-    needs: [unit-tests-backend,unit-tests-frontend]
+    needs: [unit-tests-backend, unit-tests-frontend]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Launch Application
         run: |
           docker compose up --build -d
           npx wait-port http://localhost:8080/api/health -t 30000
-          
+
       - name: Run API Tests
         working-directory: ./tests-api
         run: |
           npm ci
           npx playwright test
+
+      - name: Shut down Application
+        run: docker compose down
+
+      - name: Upload API Test Results
+        if: always()
+        uses: action/upload-artifact@v4
+        with:
+          name: apit-test-results
+          path: ./tests-api/test-Results
+          retention-days: 30
